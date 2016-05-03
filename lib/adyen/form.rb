@@ -224,15 +224,18 @@ module Adyen
     # @param [Hash] parameters The parameters that will be included in the payment request.
     # @return [String] The string for which the siganture is calculated.
     def calculate_signature_string(parameters)
-      merchant_sig_string = ""
-      merchant_sig_string << parameters[:payment_amount].to_s       << parameters[:currency_code].to_s        <<
-                             parameters[:ship_before_date].to_s     << parameters[:merchant_reference].to_s   <<
-                             parameters[:skin_code].to_s            << parameters[:merchant_account].to_s     <<
-                             parameters[:session_validity].to_s     << parameters[:shopper_email].to_s        <<
-                             parameters[:shopper_reference].to_s    << parameters[:recurring_contract].to_s   <<
-                             parameters[:allowed_methods].to_s      << parameters[:blocked_methods].to_s      <<
-                             parameters[:shopper_statement].to_s    << parameters[:merchant_return_data].to_s <<
-                             parameters[:billing_address_type].to_s << parameters[:offset].to_s
+      # currencyCode:merchantAccount:merchantReference:paymentAmount:sessionValidity:shipBeforeDate:shopperLocale:skinCode:EUR:TestMerchant:PAYMENTTEST\:143522\\64\\39255:1995:2015-06-25T10\:31\:06Z:2015-07-01:en_GB:X7hsNDWp 
+      merchant_sig_string = "currencyCode:merchantAccount:merchantReference:paymentAmount:recurringContract:sessionValidity:shipBeforeDate:shopperEmail:shopperReference:skinCode:"
+      merchant_sig_string << parameters[:currency_code].to_s << ":" <<
+                             parameters[:merchant_account].to_s << ":" <<
+                             parameters[:merchant_reference].to_s << ":" <<
+                             parameters[:payment_amount].to_s << ":" <<
+                             parameters[:recurring_contract].to_s << ":" <<
+                             parameters[:session_validity].to_s << ":" <<
+                             parameters[:ship_before_date].to_s << ":" <<
+                             parameters[:shopper_email] << ":" <<
+                             parameters[:shopper_reference] << ":" <<
+                             parameters[:skin_code].to_s
     end
 
     # Calculates the payment request signature for the given payment parameters.
