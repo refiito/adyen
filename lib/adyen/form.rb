@@ -231,10 +231,10 @@ module Adyen
                              parameters[:merchant_reference].to_s << ":" <<
                              parameters[:payment_amount].to_s << ":" <<
                              parameters[:recurring_contract].to_s << ":" <<
-                             parameters[:session_validity].to_s << ":" <<
-                             parameters[:ship_before_date].to_s << ":" <<
-                             parameters[:shopper_email] << ":" <<
-                             parameters[:shopper_reference] << ":" <<
+                             parameters[:session_validity].to_s.gsub(':', '\\:').gsub('\\', '\\\\') << ":" <<
+                             parameters[:ship_before_date].to_s.gsub(':', '\\:').gsub('\\', '\\\\') << ":" <<
+                             parameters[:shopper_email].to_s << ":" <<
+                             parameters[:shopper_reference].to_s << ":" <<
                              parameters[:skin_code].to_s
     end
 
