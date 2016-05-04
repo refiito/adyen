@@ -271,8 +271,8 @@ module Adyen
     def calculate_signature(parameters, shared_secret = nil)
       shared_secret ||= parameters.delete(:shared_secret)
       raise ArgumentError, "Cannot calculate payment request signature with empty shared_secret" if shared_secret.to_s.empty?
-      puts "DEBUG"
-      puts string_to_sign(parameters)
+      log.info "DEBUG"
+      log.info string_to_sign(parameters)
       Adyen::Encoding.hmac_base64(shared_secret, string_to_sign(parameters))
     end
 
