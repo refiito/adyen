@@ -251,7 +251,7 @@ module Adyen
     end
 
     def escape_value(value)
-      value.gsub(':', '\\:').gsub('\\', '\\\\')
+      value.to_s.gsub(':', '\\:').gsub('\\', '\\\\')
     end
 
     # Calculates the payment request signature for the given payment parameters.
