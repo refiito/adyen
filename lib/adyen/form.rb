@@ -116,13 +116,13 @@ module Adyen
       raise ArgumentError, "Cannot calculate payment request signature without shared secret!" unless shared_secret
       parameters[:merchant_sig] = calculate_signature(parameters, shared_secret)
 
-      if parameters[:billing_address]
-        parameters[:billing_address_sig] = calculate_billing_address_signature(parameters, shared_secret)
-      end
+      #if parameters[:billing_address]
+      #  parameters[:billing_address_sig] = calculate_billing_address_signature(parameters, shared_secret)
+      #end
 
-      if parameters[:shopper]
-        parameters[:shopper_sig] = calculate_shopper_signature(parameters, shared_secret)
-      end
+      #if parameters[:shopper]
+      #  parameters[:shopper_sig] = calculate_shopper_signature(parameters, shared_secret)
+      #end
 
       return parameters
     end
@@ -271,8 +271,7 @@ module Adyen
     def calculate_signature(parameters, shared_secret = nil)
       shared_secret ||= parameters.delete(:shared_secret)
       raise ArgumentError, "Cannot calculate payment request signature with empty shared_secret" if shared_secret.to_s.empty?
-      log.info "DEBUG"
-      log.info string_to_sign(parameters)
+      raise ArgumentError, string_to_sign(parameters)
       Adyen::Encoding.hmac_base64(shared_secret, string_to_sign(parameters))
     end
 
