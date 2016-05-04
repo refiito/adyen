@@ -238,6 +238,22 @@ module Adyen
                              parameters[:skin_code].to_s
     end
 
+    def string_to_sign(params)
+      (sorted_keys(params) + sorted_values(params)).map{ |el| escape_value(el) }.join(':')
+    end
+
+    def sorted_keys(hash)
+      hash.sort.map{ |el| el[0] }
+    end
+
+    def sorted_values(hash)
+      hash.sort.map{ |el| el[1] }
+    end
+
+    def escape_value(value)
+      value.gsub(':', '\\:').gsub('\\', '\\\\')
+    end
+
     # Calculates the payment request signature for the given payment parameters.
     #
     # This signature is used by Adyen to check whether the request is
@@ -255,7 +271,7 @@ module Adyen
     def calculate_signature(parameters, shared_secret = nil)
       shared_secret ||= parameters.delete(:shared_secret)
       raise ArgumentError, "Cannot calculate payment request signature with empty shared_secret" if shared_secret.to_s.empty?
-      Adyen::Encoding.hmac_base64(shared_secret, calculate_signature_string(parameters))
+      Adyen::Encoding.hmac_base64(shared_secret, string_to_sign(parameters))
     end
 
     # Generates the string that is used to calculate the request signature. This signature
